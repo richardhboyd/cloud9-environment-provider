@@ -1,0 +1,13 @@
+Resources:
+  MyEnv:
+    Type: "Richard::Cloud9::EnvironmentSSM"
+    Properties:
+        OwnerArn: "arn:aws:sts::823694853982:assumed-role/Feder08/redirect_session"
+        EbsVolumeSize: 50
+        InstanceType: m5.large
+        EnvironmentName: Test002
+        OperatingSystem: AmazonLinux2
+        Runtimes:
+          python: 3.8
+        BootstrapCommands:
+          - 'echo "test" > /home/ec2-user/environment/file.txt'

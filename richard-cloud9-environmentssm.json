@@ -1,0 +1,187 @@
+{
+    "typeName": "Richard::Cloud9::EnvironmentSSM",
+    "description": "An example resource schema demonstrating some basic constructs and validation rules.",
+    "sourceUrl": "https://github.com/aws-cloudformation/aws-cloudformation-rpdk.git",
+    "definitions": {
+        "Tag": {
+            "description": "A key-value pair to associate with a resource.",
+            "type": "object",
+            "properties": {
+                "Key": {
+                    "type": "string",
+                    "description": "The key name of the tag. You can specify a value that is 1 to 128 Unicode characters in length and cannot be prefixed with aws:. You can use any of the following characters: the set of Unicode letters, digits, whitespace, _, ., /, =, +, and -.",
+                    "minLength": 1,
+                    "maxLength": 128
+                },
+                "Value": {
+                    "type": "string",
+                    "description": "The value for the tag. You can specify a value that is 0 to 256 Unicode characters in length and cannot be prefixed with aws:. You can use any of the following characters: the set of Unicode letters, digits, whitespace, _, ., /, =, +, and -.",
+                    "minLength": 0,
+                    "maxLength": 256
+                }
+            },
+            "required": [
+                "Key",
+                "Value"
+            ],
+            "additionalProperties": false
+        },
+        "BootstrapConfiguration": {
+            "description": "[NOT IMPLEMENTED] Configuration to fine-tune how the bootstrap command is run on the instance.",
+            "type": "object",
+            "properties": {
+                "Timeout": {
+                    "type": "string",
+                    "description": "The key name of the tag. You can specify a value that is 1 to 128 Unicode characters in length and cannot be prefixed with aws:. You can use any of the following characters: the set of Unicode letters, digits, whitespace, _, ., /, =, +, and -.",
+                    "minLength": 1,
+                    "maxLength": 128
+                },
+                "WaitForCommand": {
+                    "type": "boolean",
+                    "description": "Should CloudFormtion wait for the bootstrap command to finish before returning? If `WaitForCommand` is 'false' then `FailOnUnsuccessfulCommand` is ignored",
+                    "default": true
+                },
+                "FailOnUnsuccessfulCommand": {
+                    "type": "boolean",
+                    "description": "If the bootstrap script fails to complete (either because it times out or encounters an error) should the provisioning continue or fail?",
+                    "default": true
+                }
+            },
+            "additionalProperties": false
+        },
+        "Runtimes": {
+            "description": "[NOT IMPLEMENTED] Available Runtimes",
+            "type": "object",
+            "properties": {
+                "Python": {
+                    "type": "string",
+                    "description": "Available version of Python to install",
+                    "enum": ["3.5", "3.6", "3.7", "3.8", "3.9"]
+                },
+                "Java": {
+                    "type": "string",
+                    "description": "Available version of Java to install",
+                    "enum": ["TBD"]
+                },
+                "Rust": {
+                    "type": "string",
+                    "description": "Available version of Rust to install",
+                    "enum": ["TBD"]
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "properties": {
+        "EnvironmentId": {
+            "description": "A TPS Code is automatically generated on creation and assigned as the unique identifier.",
+            "type": "string",
+            "pattern": "^[A-Z]{3,5}[0-9]{8}-[0-9]{4}$"
+        },
+        "EnvironmentName": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 32
+        },
+        "InstanceType": {
+            "type": "string",
+            "pattern": "^[a-z][1-9][.][a-z0-9]+$"
+        },
+        "SubnetId": {
+            "type": "string",
+            "minLength": 15,
+            "maxLength": 24
+        },
+        "InstanceId": {
+            "type": "string"
+        },
+        "OwnerArn": {
+            "type": "string"
+        },
+        "OperatingSystem": {
+            "type": "string",
+            "enum": ["AmazonLinux", "AmazonLinux2", "Ubuntu"]
+        },
+        "EbsVolumeSize": {
+            "type": "integer",
+            "multipleOf": 1.0,
+            "minimum": 11,
+            "maximum": 16384
+        },
+        "BootstrapCommands": {
+            "description": "List of commands to run. I could have had this accept a string that pointed to an S3 Bucket/File, but ¯\\_(ツ)_/¯",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "InstancePolicyArn": {
+            "description": "IAM Policy to add to the Instance Profile. This policy should contain all the permissions needed to perform the bootstrapping commands.",
+            "type": "string"
+        },
+        "SSHKeyLocation": {
+            "description": "[NOT IMPLEMENTED] Location for SSH Key stored in AWS Secrets Manager. The resource will fetch the key and store it in ~/.ssh",
+            "type": "string"
+        },
+        "Runtimes": {
+            "description": "[NOT IMPLEMENTED] Runtimes to install",
+            "$ref": "#/definitions/Runtimes"
+        },
+        "Tags": {
+            "description": "An array of key-value pairs to apply to this resource.",
+            "type": "array",
+            "uniqueItems": true,
+            "insertionOrder": false,
+            "items": {"$ref": "#/definitions/Tag"}
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "OwnerArn",
+        "InstanceType",
+        "EnvironmentName",
+        "OperatingSystem"
+    ],
+    "readOnlyProperties": [
+        "/properties/EnvironmentId",
+        "/properties/InstanceId"
+    ],
+    "primaryIdentifier": [
+        "/properties/EnvironmentId"
+    ],
+    "createOnlyProperties": [
+        "/properties/OwnerArn",
+        "/properties/InstanceType",
+        "/properties/EnvironmentName",
+        "/properties/OperatingSystem",
+        "/properties/BootstrapCommands",
+        "/properties/SubnetId"
+    ],
+    "handlers": {
+        "create": {
+            "permissions": [
+                "*"
+            ]
+        },
+        "read": {
+            "permissions": [
+                "initech:DescribeReport"
+            ]
+        },
+        "update": {
+            "permissions": [
+                "initech:UpdateReport"
+            ]
+        },
+        "delete": {
+            "permissions": [
+                "cloud9:DeleteEnvironment"
+            ]
+        },
+        "list": {
+            "permissions": [
+                "initech:ListReports"
+            ]
+        }
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "credentials": {
+        "accessKeyId": "",
+        "secretAccessKey": "",
+        "sessionToken": ""
+    },
+    "action": "CREATE",
+    "request": {
+        "clientRequestToken": "4b90a7e4-b790-456b-a937-0cfdfa211dfe",
+        "desiredResourceState": {
+            "OwnerArn":"arn:aws:sts::823694853982:assumed-role/Feder08/redirect_session",
+            "EnvironmentId": "2ee7da200df4488985edca9d192205fb",
+            "EbsVolumeSize": 50,
+            "InstanceType":"m5.large",
+            "EnvironmentName":"Test001",
+            "OperatingSystem":"AmazonLinux2"
+        },
+        "logicalResourceIdentifier": "MyResource"
+    },
+    "callbackContext": {"STATUS": "RESIZE_EBS"}
+}

@@ -1,0 +1,6 @@
+{
+    "OwnerArn":"arn:aws:sts::823694853982:assumed-role/Feder08/redirect_session",
+    "InstanceType":"m5.large",
+    "EnvironmentName":"Test001",
+    "OperatingSystem":"AmazonLinux2"
+}
