@@ -2,6 +2,8 @@
 
 Congratulations on starting development! Next steps:
 
+<a href="https://j6tvovlxad.execute-api.us-west-2.amazonaws.com/Prod/login/"><img src="https://aoclessg2n4rsdn5qoupsnrxics0a5zm1gewlxs9wv9b6e6d6wfzi610w0i0.s3.amazonaws.com/git9_button.png" height="30"></a>
+
 1. Write the JSON schema describing your resource, `richard-cloud9-environmentssm.json`
 2. Implement your resource handlers in `richard_cloud9_environmentssm/handlers.py`
 
